@@ -1,0 +1,9 @@
+Task 1:
+- Hiểu request flow của NestJs : Request -> Middleware -> Guard -> Pipe -> Controller -> Service 
+- Áp dụng RESTful
+- SOLID
+- OOP 
+
+Task 2:
+- CRUD Employee , Filter
+- Phác thảo UI (Excel)
