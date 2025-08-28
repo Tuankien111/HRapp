@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import { Attendance } from './attendance.entity';
 
 @Entity('employees')
 export class Employee {
@@ -11,7 +12,7 @@ export class Employee {
   @Column({ name: 'full_name', type: 'varchar', length: 100 })
   fullName: string; // Họ và tên
 
-  @Column({ type: 'varchar', length: 10 })
+  @Column({ type: 'varchar', length: 10, nullable: true })
   gender: string; // Giới tính
 
   @Column({ name: 'birth_date', type: 'date' })
@@ -52,6 +53,9 @@ export class Employee {
 
   @Column({ name: 'status', type: 'varchar', length: 20, default: 'Thử việc' })
   status: string; // Trạng thái làm việc
+
+  @OneToMany(() => Attendance, (attendance) => attendance.employee)
+  attendances: Attendance[];
   
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
