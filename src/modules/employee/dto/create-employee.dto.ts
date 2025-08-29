@@ -4,6 +4,10 @@ import {
 } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { registerDecorator, ValidationOptions, ValidationArguments } from 'class-validator';
+import { ValidationMessage } from 'src/global/constants/validation-message';
+import { EmployeeGender } from 'src/global/constants/globalEnum';
+import { EmployeeStatus } from 'src/global/constants/globalEnum';
+import { generate } from 'rxjs';
 
 // Custom validator: tuổi >= 18
 function IsAdult(validationOptions?: ValidationOptions) {
@@ -22,7 +26,7 @@ function IsAdult(validationOptions?: ValidationOptions) {
           return age >= 18;
         },
         defaultMessage(args: ValidationArguments) {
-          return 'Nhân viên phải từ 18 tuổi trở lên';
+          return ValidationMessage.BIRTHDAY.INVALID;
         },
       },
     });
@@ -31,21 +35,21 @@ function IsAdult(validationOptions?: ValidationOptions) {
 
 export class CreateEmployeeDto {
   @IsString()
-  @IsNotEmpty()
-  @Matches(/^TK025\d{2}$/, { message: 'Mã nhân viên phải có dạng TK025xx (xx là số)' })
+  @IsNotEmpty({ message: ValidationMessage.EMPLOYEE_CODE.REQUIRE })
+  @Matches(/^TK025\d{2}$/, { message: ValidationMessage.EMPLOYEE_CODE.INVALID })
   employeeCode: string; // Mã nhân viên
 
   @IsString()
-  @IsNotEmpty()
-  @Matches(/^[A-ZÀ-Ý][a-zA-ZÀ-ỹ\s]+$/, { message: 'Họ tên không hợp lệ (chữ cái đầu viết hoa, không chứa số/ký tự đặc biệt)' })
+  @IsNotEmpty({ message: ValidationMessage.FULLNAME.REQUIRE })
+  @Matches(/^[A-ZÀ-Ý][a-zA-ZÀ-ỹ\s]+$/, { message: ValidationMessage.FULLNAME.INVALID })
   fullName: string; // Họ tên
 
   @IsString()
-  @IsIn(['Nam', 'Nữ'], { message: 'Giới tính chỉ được là Nam hoặc Nữ' })
-  gender: 'Nam' | 'Nữ'; // Giới tính
+  @IsIn([EmployeeGender.MALE, EmployeeGender.FEMALE], { message: ValidationMessage.GENDER.INVALID })
+  gender: EmployeeGender; // Giới tính
 
   @IsDateString()
-  @IsAdult({ message: 'Nhân viên phải đủ 18 tuổi trở lên' })
+  @IsAdult()
   birthDate: Date; // Ngày sinh
 
   @IsString()
@@ -63,7 +67,7 @@ export class CreateEmployeeDto {
   address: string; // Địa chỉ
 
   @IsString()
-  @Matches(/^[0-9]{10,11}$/, { message: 'Số điện thoại phải là 10-11 chữ số' })
+  @Matches(/^[0-9]{10,11}$/, { message: ValidationMessage.PHONE.INVALID })
   phone: string; // Số điện thoại
 
   @IsDateString()
@@ -88,6 +92,6 @@ export class CreateEmployeeDto {
 
   @IsOptional()
   @IsString()
-  @Transform(({ value }) => value ?? 'Thử việc') // nếu không truyền thì mặc định "Thử việc"
-  status?: 'Thử việc' | 'Chính thức';
+  @IsIn([EmployeeStatus.PROBATION, EmployeeStatus.OFFICIAL], { message: ValidationMessage.STATUS.INVALID })
+  status?: EmployeeStatus;
 }

@@ -11,3 +11,13 @@ export enum HttpMessage {
     INTERNAL_SERVER_ERROR= "Internal Server Error",
     SUCCESS= "Success"
 }
+
+export enum EmployeeGender {
+    MALE = 'Nam',
+    FEMALE = 'Nữ'
+}
+
+export enum EmployeeStatus {
+    PROBATION = 'Thử việc',
+    OFFICIAL = 'Chính thức'
+}

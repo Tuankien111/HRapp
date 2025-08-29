@@ -1,34 +1,35 @@
-import { IsNotEmpty, IsString, IsDateString, IsNumber, IsOptional, Min, MaxLength } from 'class-validator';
-
+import { IsNotEmpty, IsString, IsDateString, IsNumber, IsOptional, Min, MaxLength,Max } from 'class-validator';
+import {ValidationMessage} from '../../../global/constants/validation-message';
 export class CreateAttendanceDto {
   @IsNotEmpty()
   @IsString()
-  employeeCode: string; // mã nhân viên (liên kết với Employee)
+  employeeCode: string; 
 
   @IsNotEmpty()
   @IsString()
   @MaxLength(50)
-  leaveType: string; // Loại phép (bệnh, thai sản, thường niên...)
+  leaveType: string; 
 
   @IsNotEmpty()
   @IsDateString()
-  dateStart: string; // Thời gian bắt đầu nghỉ
+  dateStart: string;
 
   @IsNotEmpty()
   @IsDateString()
-  dateEnd: string; // Thời gian kết thúc nghỉ
+  dateEnd: string; 
 
   @IsNotEmpty()
   @IsNumber()
-  @Min(0.5, { message: 'Số ngày nghỉ phải >= 0.5' })
-  days: number; // Số ngày nghỉ (có thể là 0.5, 1, 2,...)
+  @Min(0.5, { message: ValidationMessage.ATTENDANCE_DAYS.MIN })
+  @Max(3, {message: ValidationMessage.ATTENDANCE_DAYS.MAX})
+  days: number; 
 
   @IsOptional()
   @IsString()
   @MaxLength(255)
-  note?: string; // Ghi chú
+  note?: string; 
 
   @IsOptional()
   @IsString()
-  attachment?: string; // Link ảnh/file đính kèm
+  attachment?: string; 
 }

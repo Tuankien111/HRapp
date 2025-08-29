@@ -28,12 +28,11 @@ export class AttendanceController {
     return this.attendanceService.createAttendance(createAttendanceDto);
   }
 
-  @Patch(':id')
+  @Patch()
   update(
-    @Param('id') id: number,
     @Body() updateAttendanceDto: UpdateAttendanceDto,
   ) {
-    return this.attendanceService.updateAttendance(id, updateAttendanceDto);
+    return this.attendanceService.updateAttendance(updateAttendanceDto);
   }
 
   @Delete()

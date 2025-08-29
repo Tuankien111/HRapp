@@ -34,9 +34,9 @@ export class AttendanceService {
       });
 
       if (!employee) {
-        throw new NotFoundException(
-          `Employee with code ${dto.employeeCode} not found`,
-        );
+        return {
+          error: `Employee with code ${dto.employeeCode} not found`,
+        };
       }
 
       const newAttendance = this.attendanceRepository.create({
@@ -50,22 +50,23 @@ export class AttendanceService {
     }
   }
 
-  async updateAttendance(id: number, updateAttendanceDto: UpdateAttendanceDto) {
+  async updateAttendance(updateAttendanceDto: UpdateAttendanceDto) {
+    const { id } = updateAttendanceDto;
     try {
       const attendance = await this.attendanceRepository.findOne({
         where: { attendanceId: id },
       });
 
       if (!attendance) {
-        throw new NotFoundException(
-          `Attendance record with id ${id} not found`,
-        );
+        return {
+          error: `Attendance record with id ${id} not found`,
+        };
       }
 
       await this.attendanceRepository.update(id, updateAttendanceDto);
-      return 'Update successful';
+      return { message: 'Update successful' };
     } catch (error) {
-      throw new BadRequestException(error.message);
+      throw new Error(error.message);
     }
   }
 
@@ -76,15 +77,15 @@ export class AttendanceService {
       });
 
       if (!attendance) {
-        throw new NotFoundException(
-          `Attendance record with id ${id} not found`,
-        );
+        return {
+          error: `Attendance record with id ${id} not found`,
+        };
       }
 
       await this.attendanceRepository.delete(id);
-      return 'Delete successful';
+      return { message: 'Delete successful' };
     } catch (error) {
-      throw new BadRequestException(error.message);
+      throw new Error(error.message);
     }
   }
 }

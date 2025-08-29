@@ -10,10 +10,10 @@ export class Employee {
   employeeCode: string; // Mã nhân viên
 
   @Column({ name: 'full_name', type: 'varchar', length: 100 })
-  fullName: string; // Họ và tên
+  fullName: string; // Họ và tênh
 
-  @Column({ type: 'varchar', length: 10, nullable: true })
-  gender: string; // Giới tính
+  @Column({ name: 'gender', type: 'enum', enum: ['Nam', 'Nữ'], default: 'Nam' })
+  gender: 'Nam' | 'Nữ'; // Giới tính
 
   @Column({ name: 'birth_date', type: 'date' })
   birthDate: Date; // Ngày sinh
@@ -51,8 +51,8 @@ export class Employee {
   @Column({ name: 'contract_end_date', type: 'date', nullable: true })
   contractEndDate: Date; // Ngày hết hạn
 
-  @Column({ name: 'status', type: 'varchar', length: 20, default: 'Thử việc' })
-  status: string; // Trạng thái làm việc
+  @Column({ name: 'status', type: 'enum', enum: ['Thử việc', 'Chính thức'], default: 'Thử việc' })
+  status: 'Thử việc' | 'Chính thức'; // Trạng thái làm việc
 
   @OneToMany(() => Attendance, (attendance) => attendance.employee)
   attendances: Attendance[];

@@ -16,21 +16,46 @@ export class EmployeeController {
 
   @Post()
   create(@Body() createEmployeeDto: CreateEmployeeDto){
-    return this.employeeService.create(createEmployeeDto);
+    try {
+      return this.employeeService.create(createEmployeeDto);
+    } catch (error) {
+      return { error: error.message };
+    }
   }
 
+  
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.employeeService.findOne(+id);
+    try {
+      return this.employeeService.findOne(+id);
+    } catch (error) {
+      return { error: error.message };
+    }
   }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateEmployeeDto: UpdateEmployeeDto) {
-    return this.employeeService.update(+id, updateEmployeeDto);
+  
+  @Patch()
+  update(@Body() updateEmployeeDto: UpdateEmployeeDto) {
+    try {
+      return this.employeeService.update(updateEmployeeDto);
+    } catch (error) {
+      return { error: error.message };
+    }
   }
-
+  
+  @Get('/filter/:code')
+  findOneByCode(@Param('code') code: string) {
+    try {
+      return this.employeeService.findByEmployeeCode(code);
+    } catch (error) {
+      return { error: error.message };
+    }
+  }
   @Delete()
   remove(@Body('id') id: string) {
-    return this.employeeService.remove(+id);
+    try {
+      return this.employeeService.remove(+id);
+    } catch (error) {
+      return { error: error.message };
+    }
   }
 }
