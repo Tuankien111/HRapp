@@ -15,7 +15,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
                 database: configService.get('DB_DATABASE') || 'posrgres',
                 entities: [__dirname + '/../**/*.entity{.ts,.js}'],
                 // migrations: [__dirname + '/../migrations/*{.ts,.js}'],
-                synchronize: false, // Tự động đồng bộ cơ sở dữ liệu 
+                synchronize: true, // Tự động đồng bộ cơ sở dữ liệu 
             }),
             inject: [ConfigService],
         }),
